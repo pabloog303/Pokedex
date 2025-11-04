@@ -1,13 +1,39 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>list-pokemons</ion-title>
+    <ion-title>Pokédex - Todos los Pokémones</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">list-pokemons</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-grid>
+    @for(pokemon of pokemons; track pokemon){
+      <ion-card (click)="goToPage(pokemon)">
+        <ion-card-content>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="3">
+              <ion-img [src]="pokemon.sprite"/>
+            </ion-col>
+            <ion-col size="4">
+              <ion-text class="ion-text-capitalize">{{ pokemon.name }}</ion-text>
+            </ion-col>
+            <ion-col size="2">
+              <ion-img [src]="'assets/img/' + pokemon.type1 + '.gif'"/>
+            </ion-col>
+            @if (pokemon.type2) {
+              <ion-col size="2">
+                <ion-img [src]="'assets/img/' + pokemon.type2 + '.gif'"/>
+              </ion-col>
+            }
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    }
+  </ion-grid>
+
+  <ion-infinite-scroll threshold="50px" (ionInfinite)="getMorePokemons($event)">
+    <ion-infinite-scroll-content
+      loadingText="Cargando..."
+      loadingSpinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
